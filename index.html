@@ -248,16 +248,23 @@ function br(){return CFG.branch?'?ref='+encodeURIComponent(CFG.branch):''}
 function api(path,o){
  o=o||{};
  var h={'Authorization':'Bearer '+CFG.token,'Accept':o.raw?'application/vnd.github.raw+json':'application/vnd.github+json'};
- return fetch('https://api.github.com/repos/'+encodeURIComponent(CFG.owner)+'/'+encodeURIComponent(CFG.repo)+path,{method:o.method||'GET',headers:h,body:o.body});
+ return fetch('https://api.github.com/repos/'+encodeURIComponent(CFG.owner)+'/'+encodeURIComponent(CFG.repo)+path,{method:o.method||'GET',headers:h,body:o.body,cache:'no-store'});
 }
 function b64text(s){return btoa(unescape(encodeURIComponent(s)))}
 function b64file(f){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1])};r.onerror=no;r.readAsDataURL(f)})}
 async function putFile(path,b64,msg){
- var sha=null,r=await api('/contents/'+path+br());
- if(r.status===200)sha=(await r.json()).sha;else if(r.status!==404)throw new Error('read '+r.status);
- var body={message:msg,content:b64};if(sha)body.sha=sha;if(CFG.branch)body.branch=CFG.branch;
- var w=await api('/contents/'+path,{method:'PUT',body:JSON.stringify(body)});
- if(!w.ok)throw new Error('write '+w.status);
+ var last=0;
+ for(var n=0;n<4;n++){
+  var sha=null,r=await api('/contents/'+path+br());
+  if(r.status===200){var j=await r.json();if(j&&j.sha)sha=j.sha}else if(r.status!==404)throw new Error('read '+r.status);
+  var body={message:msg,content:b64};if(sha)body.sha=sha;if(CFG.branch)body.branch=CFG.branch;
+  var w=await api('/contents/'+path,{method:'PUT',body:JSON.stringify(body)});
+  if(w.ok)return;
+  last=w.status;
+  if(w.status!==409&&w.status!==422)break;
+  await new Promise(function(ok){setTimeout(ok,1200)});
+ }
+ throw new Error('write '+last);
 }
 function commitData(){return putFile('data.json',b64text(JSON.stringify(state,null,1)),'تحديث ملف الإنجاز')}
 var MIME={pdf:'application/pdf',mp4:'video/mp4',mov:'video/quicktime',webm:'video/webm',mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',heic:'image/heic'};
