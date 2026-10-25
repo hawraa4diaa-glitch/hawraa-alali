@@ -1,1 +1,21 @@
-{"v":1,"data":{}}
+{
+ "v": 1,
+ "data": {
+  "math": {
+   "hw": [
+    {
+     "id": "mvnq50v33wa0",
+     "title": "مهمة ادائيه",
+     "date": "2026-10-25",
+     "note": "مهمه1",
+     "link": "",
+     "file": {
+      "url": "uploads/mvnq50v4.png",
+      "name": "Screenshot 2026-10-25 134019.png",
+      "type": "image/png"
+     }
+    }
+   ]
+  }
+ }
+}
