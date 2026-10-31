@@ -16,6 +16,22 @@
      }
     }
    ]
+  },
+  "phys": {
+   "acts": [
+    {
+     "id": "mvwgm9pb9z82",
+     "title": "جانبا من تصميم جهاز قياس الزلازل",
+     "date": "2026-10-31",
+     "note": "",
+     "link": "",
+     "file": {
+      "url": "uploads/mvwgm9pc.mp4",
+      "name": "WhatsApp Video 2026-10-31 at 4.50.43 PM.mp4",
+      "type": "video/mp4"
+     }
+    }
+   ]
   }
  }
 }
