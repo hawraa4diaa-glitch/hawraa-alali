@@ -15,11 +15,12 @@
   --bg:#141b18; --surface:#1a231f; --band:#101613; --ink:#e9e6da; --muted:#98a396; --line:#2b3730;
   --green:#7fbfa7; --on-green:#10201a; --terra:#e0906d; --ochre:#d4ac5e; --teal:#7fbcc4; --field:#121a16; --danger:#e58b7c; color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.7}
+html, body {overflow-x:hidden; width:100%; margin:0; padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.7}
 button,input,textarea{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--green);outline-offset:2px}
-.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));width:100%}
 .band{background:var(--band)}
 svg.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
 svg.f{fill:currentColor;stroke:none}
@@ -49,7 +50,7 @@ h1 em{display:block;font-weight:500;font-style:italic;color:var(--green)}
 .owner b{display:block;font-size:clamp(20px,3vw,26px);font-weight:600;line-height:1.4}
 .owner span{display:block;color:var(--muted);font-size:14px}
 .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-block:20px clamp(48px,8vw,100px)}
-.card{background:var(--surface);border:1px solid var(--line);padding:20px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;text-align:start;cursor:pointer;transition:border-color .2s,transform .2s}
+.card{background:var(--surface);border:1px solid var(--line);padding:20px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;text-align:start;cursor:pointer;transition:border-color .2s,transform .2s;width:100%}
 .card:hover{border-color:var(--c);transform:translateY(-2px)}
 .card .row{display:flex;justify-content:space-between;align-items:flex-start;color:var(--c)}
 .card .row span{font-size:12px;color:var(--muted)}
@@ -69,8 +70,8 @@ h1 em{display:block;font-weight:500;font-style:italic;color:var(--green)}
 .stitle h2{margin:0;font-size:clamp(30px,5vw,40px);font-weight:500;line-height:1.3}
 .search{border:0;border-bottom:1px solid var(--line);background:transparent;padding:8px 2px;min-width:min(260px,100%);font-style:italic}
 .search::placeholder{color:var(--muted)}
-.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-block:24px 56px}
-.col{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;min-height:330px;min-width:0}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-block:24px 56px;width:100%}
+.col{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;min-height:330px;min-width:0;width:100%}
 .col header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
 .col h3{margin:0;font-size:16px;font-weight:600;display:flex;align-items:baseline;gap:8px}
 .col h3 span{font-size:11px;color:var(--c);font-weight:400}
@@ -97,14 +98,14 @@ audio.media{background:none;border:0}
 .add:hover{background:var(--band)}
 .add span{display:flex;align-items:center;gap:8px}
 
-.talk{padding-block:56px 72px}
+.talk{padding-block:56px 72px; width:100%;}
 .talkgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,5vw,72px);align-items:start}
 .talkgrid h2{margin:0;font-size:clamp(28px,4.5vw,40px);font-weight:500;line-height:1.35;display:flex;align-items:center;gap:12px}
 .talkgrid h2 svg{width:30px;height:30px;color:var(--c)}
 .talkgrid .intro{color:var(--muted);font-size:13.5px;margin:14px 0 0;max-width:42ch}
-.box{border:1px dashed var(--muted);padding:20px;display:flex;flex-direction:column;gap:16px;min-height:200px;min-width:0}
+.box{border:1px dashed var(--muted);padding:20px;display:flex;flex-direction:column;gap:16px;min-height:200px;min-width:0;width:100%}
 .box .none{margin:auto;text-align:center;color:var(--muted);font-size:13px}
-.box .none small{display:block;font-size:11px;margin-top:6px;opacity:.8}
+.box .none small{display:block;font-size:11.5px;margin-top:6px;opacity:.8}
 .post{background:var(--surface);border:1px solid var(--line);padding:14px 16px;min-width:0}
 .post p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .post time{font-size:11.5px;color:var(--muted)}
@@ -124,7 +125,7 @@ textarea{min-height:90px;resize:vertical}
 .md .acts{display:flex;gap:10px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:max(20px,env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:13px;z-index:30}
 
-@media (max-width:980px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.talkgrid{grid-template-columns:1fr}}
+@media (max-width:1024px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.talkgrid{grid-template-columns:1fr}}
 @media (max-width:520px){.cards{grid-template-columns:1fr}.card{min-height:170px}}
 
 .foot .lnk{background:none;border:0;cursor:pointer;color:var(--muted);font-size:12px;padding:4px 0}
