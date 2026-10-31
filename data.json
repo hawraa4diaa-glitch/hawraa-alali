@@ -32,6 +32,22 @@
      }
     }
    ]
+  },
+  "chem": {
+   "acts": [
+    {
+     "id": "mvwgxh7rlwhn",
+     "title": "النشاط الثالث+الاول",
+     "date": "2026-10-31",
+     "note": "APRX team",
+     "link": "",
+     "file": {
+      "url": "uploads/mvwgxh7t.pdf",
+      "name": "APEX TEAM.pdf",
+      "type": "application/pdf"
+     }
+    }
+   ]
   }
  }
 }
