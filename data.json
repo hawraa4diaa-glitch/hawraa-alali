@@ -47,6 +47,20 @@
       "type": "application/pdf"
      }
     }
+   ],
+   "hw": [
+    {
+     "id": "mvwhfu4emz2m",
+     "title": "رحله الضوء",
+     "date": "2026-10-31",
+     "note": "",
+     "link": "",
+     "file": {
+      "url": "uploads/mvwhfu4f.png",
+      "name": "Screenshot 2026-10-31 171352.png",
+      "type": "image/png"
+     }
+    }
    ]
   }
  }
