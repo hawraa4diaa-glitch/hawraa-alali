@@ -15,6 +15,20 @@
       "type": "image/png"
      }
     }
+   ],
+   "tests": [
+    {
+     "id": "mw9iahvddtev",
+     "title": "الاختبار التشخيصي",
+     "date": "2026-11-09",
+     "note": "",
+     "link": "",
+     "file": {
+      "url": "uploads/mw9iahve.jpeg",
+      "name": "WhatsApp Image 2026-11-09 at 7.55.19 PM.jpeg",
+      "type": "image/jpeg"
+     }
+    }
    ]
   },
   "phys": {
