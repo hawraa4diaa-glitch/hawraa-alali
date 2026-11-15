@@ -42,7 +42,21 @@
      }
     }
    ],
-   "acts": []
+   "acts": [],
+   "certs": [
+    {
+     "id": "mwi6vmwrn00l",
+     "title": "شهاده شكر و تقدير",
+     "date": "2026-11-15",
+     "note": "",
+     "link": "",
+     "file": {
+      "url": "uploads/mwi6vmwr.jpeg",
+      "name": "WhatsApp Image 2026-11-09 at 8.21.45 PM.jpeg",
+      "type": "image/jpeg"
+     }
+    }
+   ]
   },
   "phys": {
    "acts": [
