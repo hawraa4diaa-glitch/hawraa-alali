@@ -79,6 +79,7 @@ h1 em{display:block;font-weight:500;font-style:italic;color:var(--green)}
 .search::placeholder{color:var(--muted)}
 
 .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-block:24px 56px}
+.cols.math-cols{grid-template-columns:repeat(4,minmax(0,1fr))}
 .col{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;min-height:330px;min-width:0}
 .col header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
 .col h3{margin:0;font-size:16px;font-weight:600;display:flex;align-items:baseline;gap:8px}
@@ -136,7 +137,7 @@ textarea{min-height:90px;resize:vertical}
 
 @media (max-width:1024px){
   .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .cols{grid-template-columns:minmax(0,1fr)}
+  .cols,.cols.math-cols{grid-template-columns:minmax(0,1fr)}
   .talkgrid{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:520px){
@@ -167,6 +168,12 @@ var COLS=[
  {key:'tests',title:'اختبارات',n:'٢',add:'أضيفي اختباراً'},
  {key:'acts',title:'أنشطة',n:'٣',add:'أضيفي نشاطاً'}
 ];
+var MATH_COLS=[
+ {key:'hw',title:'واجبات',n:'١',add:'أضيفي واجباً'},
+ {key:'tests',title:'اختبارات',n:'٢',add:'أضيفي اختباراً'},
+ {key:'acts',title:'أنشطة',n:'٣',add:'أضيفي نشاطاً'},
+ {key:'certs',title:'شهادات الشكر والتقدير',n:'٤',add:'أضيفي شهادة'}
+];
 var state={v:1,data:{}};
 var view=null,query='',canEdit=false,ask=null;
 var $=function(id){return document.getElementById(id)};
@@ -192,7 +199,7 @@ function worksLabel(n){if(!n)return 'لا أعمال بعد';if(n===1)return 'ع
 function fdate(d){if(!d)return '';var x=new Date(d+'T00:00:00');if(isNaN(x))return '';return x.toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'})}
 function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function safeUrl(u){u=String(u||'').trim();if(!u)return '';if(!/^https?:\/\//i.test(u))u='https://'+u;try{var p=new URL(u);return /^https?:$/.test(p.protocol)?p.href:''}catch(e){return ''}}
-function keepFile(id){if(!id)return null;var o=list(view,$('form').dataset.key).filter(function(x){return x.id===id})[0];return o&&o.file&&!($('f-rm')&&$('f-rm').checked)?o.file:null}
+function keepFile(id){if(!id)return null;var activeCols = (view==='math')?MATH_COLS:COLS; var colObj = activeCols.filter(function(c){return $('form').dataset.key === c.id || $('form').dataset.key === c.key})[0]; var key = $('form').dataset.key; var o=list(view,key).filter(function(x){return x.id===id})[0];return o&&o.file&&!($('f-rm')&&$('f-rm').checked)?o.file:null}
 function attHtml(f){
  if(!f||!f.url||!/^(uploads\/|https:\/\/)/.test(f.url))return '';var u=esc(f.url),t=f.type||'';
  if(/^image\//.test(t))return '<a class="att" href="'+u+'" target="_blank" rel="noopener"><img src="'+u+'" alt="'+esc(f.name)+'" loading="lazy"></a>';
@@ -211,7 +218,8 @@ function footer(){
 }
 function home(){
  var cards=SUBJECTS.map(function(s){
-  var n=0;COLS.forEach(function(c){n+=list(s.id,c.key).length});
+  var n=0; var activeCols = (s.id==='math')?MATH_COLS:COLS;
+  activeCols.forEach(function(c){n+=list(s.id,c.key).length});
   return '<button class="card" style="--c:var('+s.c+')" data-act="open" data-id="'+s.id+'" type="button"><div class="row">'+ico(s.icon)+'<span>'+worksLabel(n)+'</span></div><div><h2>'+s.name+'</h2><p>'+s.tag+'</p></div><span class="go">'+ico(I.diag)+' افتح المادة</span></button>'
  }).join('');
  return header()+'<main class="band"><div class="wrap"><section class="hero"><div class="eyebrow">ملف إنجاز موهبة</div><h1>أعمالي في<em>فصول موهبة.</em></h1><div class="owner"><b>'+OWNER+'</b><span>'+SCHOOL+'</span></div><p class="sub">اختر مادة لتعرض واجباتها واختباراتها وأنشطتها وصندوق نقاشها.</p></section><section class="cards" aria-label="المواد">'+cards+'</section></div></main>'+footer()
@@ -223,7 +231,8 @@ function itemHtml(s,key,it){
 }
 function colsHtml(s){
  var q=query.trim().toLowerCase();
- return COLS.map(function(c){
+ var activeCols = (s.id==='math')?MATH_COLS:COLS;
+ return activeCols.map(function(c){
   var all=list(s.id,c.key),items=q?all.filter(function(it){return (it.title+' '+(it.note||'')).toLowerCase().indexOf(q)>-1}):all;
   var body=items.length?items.map(function(it){return itemHtml(s,c.key,it)}).join(''):'<div class="empty">'+ico(I.book)+'<span>'+(q?'لا نتائج مطابقة.':canEdit?'مساحةٌ تنتظر أول أثر منك.':'لا يوجد محتوى هنا بعد.')+'</span></div>';
   return '<section class="col" style="--c:var('+s.c+')"><header><h3>'+c.title+' <span>'+c.n+'-</span></h3><span class="count">'+num(items.length)+'</span></header><div class="list">'+body+'</div>'+(canEdit?'<button class="add" type="button" data-act="add" data-key="'+c.key+'"><span>'+ico(I.plus)+' '+c.add+'</span><span aria-hidden="true">+</span></button>':'')+'</section>'
@@ -239,7 +248,8 @@ function talkHtml(s){
  return '<section class="talk band" style="--c:var('+s.c+')"><div class="wrap talkgrid"><div><div class="eyebrow">حوار المادة</div><h2>'+ico(I.chat)+'صندوق نقاش '+s.name+'</h2><p class="intro">مساحة مستقلة لهذه المادة: سؤال عالق، أو فكرة جديدة، أو ملاحظة تستحق المشاركة.</p></div><div class="box">'+body+comp+'</div></div></section>'
 }
 function subject(s){
- return header()+'<main><div class="wrap"><button class="back" data-act="home" type="button">العودة إلى المواد '+ico(I.arrow)+'</button><div class="shead" style="--c:var('+s.c+')"><div class="stitle"><span class="sicon">'+ico(s.icon)+'</span><div><small>دفتر المادة · '+OWNER+'</small><h2>'+s.name+'</h2></div></div><label class="sr" for="q">بحث</label><input class="search" id="q" type="search" placeholder="'+esc(s.tag)+'" value="'+esc(query)+'" autocomplete="off"></div><div class="cols" id="cols" style="--c:var('+s.c+')">'+colsHtml(s)+'</div></div>'+talkHtml(s)+'</main>'+footer()
+ var colsClass = (s.id==='math')?'cols math-cols':'cols';
+ return header()+'<main><div class="wrap"><button class="back" data-act="home" type="button">العودة إلى المواد '+ico(I.arrow)+'</button><div class="shead" style="--c:var('+s.c+')"><div class="stitle"><span class="sicon">'+ico(s.icon)+'</span><div><small>دفتر المادة · '+OWNER+'</small><h2>'+s.name+'</h2></div></div><label class="sr" for="q">بحث</label><input class="search" id="q" type="search" placeholder="'+esc(s.tag)+'" value="'+esc(query)+'" autocomplete="off"></div><div class="'+colsClass+'" id="cols" style="--c:var('+s.c+')">'+colsHtml(s)+'</div></div>'+talkHtml(s)+'</main>'+footer()
 }
 function render(){
  var s=view&&sub(view);
@@ -336,7 +346,10 @@ function logout(){
 }
 
 function openForm(key,id){
- var s=sub(view),c=COLS.filter(function(x){return x.key===key})[0],it=id?list(view,key).filter(function(x){return x.id===id})[0]:null;
+ var s=sub(view);
+ var activeCols = (view==='math')?MATH_COLS:COLS;
+ var c=activeCols.filter(function(x){return x.key===key})[0];
+ var it=id?list(view,key).filter(function(x){return x.id===id})[0]:null;
  var m=$('modal');
  m.className='ov';m.hidden=false;
  m.innerHTML='<form class="md" id="form" role="dialog" aria-modal="true" aria-labelledby="mt"><h3 id="mt">'+(it?'تعديل':'إضافة')+' · '+c.title+' '+s.name+'</h3>'+
